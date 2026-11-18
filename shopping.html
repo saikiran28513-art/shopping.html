@@ -1,0 +1,447 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXORA | Online Shopping</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,sans-serif;background:#f5f6fa;color:#20212a}
+button{cursor:pointer;border:0;font-family:inherit}
+a{text-decoration:none;color:inherit}
+
+.topbar{
+background:#17182b;color:#fff;padding:17px 6%;
+display:flex;align-items:center;justify-content:space-between;
+gap:20px;flex-wrap:wrap
+}
+.logo{font-size:27px;font-weight:800;letter-spacing:1px}
+.logo span{color:#a99aff}
+.searchbox{display:flex;flex:1;max-width:570px;background:white;border-radius:9px;overflow:hidden}
+.searchbox input{padding:14px;border:0;outline:0;flex:1;min-width:0;font-size:14px}
+.searchbox button{background:#7865f5;color:white;padding:0 22px;font-size:17px}
+.actions{display:flex;gap:18px;align-items:center}
+.action{color:white;font-size:13px;text-align:center;cursor:pointer}
+.action b{display:block;font-size:15px;margin-top:4px}
+.cart-button{background:#7865f5;padding:12px 17px;border-radius:9px;color:white;font-weight:700}
+
+.navbar{
+display:flex;justify-content:center;gap:38px;
+background:white;padding:17px;box-shadow:0 3px 12px #00000008;
+font-size:13px;font-weight:600;flex-wrap:wrap
+}
+.navbar a:hover{color:#7865f5}
+
+.hero{
+margin:28px auto;width:90%;min-height:310px;border-radius:22px;
+background:linear-gradient(115deg,#17182b,#423b85,#8c77ed);
+color:white;padding:55px 7%;
+display:flex;align-items:center;justify-content:space-between;
+overflow:hidden;position:relative
+}
+.hero-content{max-width:500px;z-index:1}
+.hero small{color:#d1c9ff;font-weight:700;letter-spacing:3px}
+.hero h1{font-size:43px;line-height:1.2;margin:17px 0}
+.hero p{color:#e2dfff;line-height:1.7}
+.hero button{background:white;color:#4d40b8;padding:14px 24px;border-radius:8px;font-weight:700;margin-top:24px}
+.hero-art{font-size:135px;filter:drop-shadow(0 15px 20px #0004)}
+
+.section{width:90%;margin:38px auto}
+.heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.heading h2{font-size:24px}
+.heading span{color:#7865f5;font-size:13px;font-weight:700}
+
+.categories{
+display:grid;grid-template-columns:repeat(6,1fr);gap:16px
+}
+.category{
+background:white;padding:22px 10px;text-align:center;
+border-radius:15px;cursor:pointer;transition:.25s;
+border:1px solid #eee
+}
+.category:hover{transform:translateY(-5px);border-color:#a99aff}
+.category div{font-size:37px;margin-bottom:10px}
+.category p{font-size:13px;font-weight:600}
+
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.filter{
+background:white;border:1px solid #e6e6ec;
+padding:10px 17px;border-radius:30px;font-size:12px;font-weight:600
+}
+.filter.active,.filter:hover{background:#7865f5;color:white;border-color:#7865f5}
+
+.products{
+display:grid;grid-template-columns:repeat(4,1fr);gap:20px
+}
+.product{
+background:white;border-radius:16px;padding:16px;
+position:relative;transition:.25s;border:1px solid #eee
+}
+.product:hover{transform:translateY(-5px);box-shadow:0 12px 30px #24204412}
+.product-image{
+height:155px;background:#f5f3ff;border-radius:12px;
+display:flex;align-items:center;justify-content:center;
+font-size:76px;margin-bottom:15px
+}
+.discount{
+position:absolute;top:25px;left:25px;
+background:#ffe5e8;color:#e34b61;padding:6px 9px;
+font-size:11px;font-weight:800;border-radius:6px
+}
+.wishlist{
+position:absolute;right:25px;top:24px;
+background:white;border-radius:50%;width:34px;height:34px;
+font-size:17px
+}
+.product small{color:#999}
+.product h3{font-size:14px;margin:9px 0}
+.rating{color:#f4a623;font-size:12px;margin:8px 0}
+.price{font-size:19px;font-weight:800;color:#27233e}
+.old-price{font-size:12px;text-decoration:line-through;color:#aaa;margin-left:7px}
+.add{
+width:100%;padding:12px;background:#17182b;color:white;
+border-radius:8px;font-weight:700;margin-top:14px
+}
+.add:hover{background:#7865f5}
+.no-results{grid-column:1/-1;text-align:center;padding:35px;color:#888}
+
+.features{
+display:grid;grid-template-columns:repeat(3,1fr);gap:20px
+}
+.feature{background:white;padding:24px;border-radius:13px;display:flex;gap:15px;align-items:center}
+.feature span{font-size:30px}
+.feature h4{font-size:14px;margin-bottom:5px}
+.feature p{font-size:12px;color:#888}
+
+.overlay{
+position:fixed;inset:0;background:#0007;z-index:9;
+opacity:0;visibility:hidden;transition:.3s
+}
+.overlay.show{opacity:1;visibility:visible}
+.cart-panel{
+position:fixed;right:-450px;top:0;width:410px;max-width:100%;
+height:100vh;background:white;z-index:10;padding:25px;
+transition:.35s;display:flex;flex-direction:column
+}
+.cart-panel.open{right:0}
+.cart-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:20px;border-bottom:1px solid #eee}
+.close{font-size:26px;background:none}
+.cart-items{flex:1;overflow:auto}
+.cart-item{display:flex;gap:13px;padding:18px 0;border-bottom:1px solid #eee}
+.cart-emoji{background:#f4f1ff;width:65px;height:65px;display:grid;place-items:center;font-size:30px;border-radius:10px}
+.cart-details{flex:1}
+.cart-details h4{font-size:13px;margin:5px 0}
+.cart-details strong{color:#7865f5}
+.quantity{display:flex;align-items:center;gap:12px;margin-top:9px}
+.quantity button{width:25px;height:25px;background:#eee;border-radius:5px}
+.remove{color:#e65b6c;background:none;font-size:12px;margin-left:auto}
+.cart-footer{border-top:1px solid #eee;padding-top:18px}
+.total-row{display:flex;justify-content:space-between;margin:12px 0;font-size:14px}
+.grand{font-size:20px;font-weight:800}
+.checkout{width:100%;padding:15px;background:#7865f5;color:white;border-radius:9px;font-weight:800;margin-top:12px}
+.empty{text-align:center;color:#999;padding:50px 0}
+
+footer{background:#17182b;color:white;padding:40px 7%;margin-top:60px}
+.footer-content{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+footer p{color:#aaa;font-size:13px;margin-top:12px;line-height:1.7}
+.copyright{text-align:center;color:#888;margin-top:35px;font-size:12px}
+
+.toast{
+position:fixed;bottom:25px;left:50%;transform:translate(-50%,100px);
+background:#17182b;color:white;padding:14px 23px;
+border-radius:9px;z-index:20;transition:.3s;font-size:13px
+}
+.toast.show{transform:translate(-50%,0)}
+
+@media(max-width:950px){
+.products{grid-template-columns:repeat(2,1fr)}
+.categories{grid-template-columns:repeat(3,1fr)}
+.hero h1{font-size:34px}
+}
+@media(max-width:600px){
+.topbar{padding:16px 5%}
+.actions{width:100%;justify-content:space-between}
+.searchbox{order:3;flex-basis:100%;max-width:none}
+.navbar{gap:18px}
+.hero{padding:35px 7%;min-height:280px}
+.hero h1{font-size:29px}
+.hero-art{font-size:65px}
+.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.product{padding:10px}
+.product-image{height:110px;font-size:50px}
+.product h3{font-size:12px}
+.price{font-size:15px}
+.categories{gap:9px}
+.category{padding:15px 5px}
+.category div{font-size:27px}
+.category p{font-size:11px}
+.features{grid-template-columns:1fr}
+.section{width:92%}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a class="logo" href="#">NEX<span>ORA.</span></a>
+
+    <div class="searchbox">
+        <input id="search" type="text" placeholder="Search for products, brands and more...">
+        <button onclick="renderProducts()">⌕</button>
+    </div>
+
+    <div class="actions">
+        <div class="action">👤<b>Account</b></div>
+        <div class="action">♡<b>Wishlist</b></div>
+        <button class="cart-button" onclick="openCart()">🛒 Cart (<span id="count">0</span>)</button>
+    </div>
+</header>
+
+<nav class="navbar">
+    <a href="#categories">Categories</a>
+    <a href="#products">Electronics</a>
+    <a href="#products">Fashion</a>
+    <a href="#products">Accessories</a>
+    <a href="#features">Our Services</a>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <small>THE BIGGEST SHOPPING FEST</small>
+        <h1>Everything You Love. One Place.</h1>
+        <p>Discover amazing products, exclusive deals and a better shopping experience.</p>
+        <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+            Explore Products →
+        </button>
+    </div>
+    <div class="hero-art">🛍️</div>
+</section>
+
+<section class="section" id="categories">
+    <div class="heading">
+        <h2>Shop by Category</h2>
+        <span>EXPLORE ALL →</span>
+    </div>
+
+    <div class="categories">
+        <div class="category" onclick="filterCategory('Electronics')"><div>🎧</div><p>Electronics</p></div>
+        <div class="category" onclick="filterCategory('Fashion')"><div>👕</div><p>Fashion</p></div>
+        <div class="category" onclick="filterCategory('Accessories')"><div>⌚</div><p>Accessories</p></div>
+        <div class="category" onclick="filterCategory('Lifestyle')"><div>🎒</div><p>Lifestyle</p></div>
+        <div class="category" onclick="filterCategory('Home')"><div>🏠</div><p>Home</p></div>
+        <div class="category" onclick="filterCategory('All')"><div>✨</div><p>All Products</p></div>
+    </div>
+</section>
+
+<section class="section" id="products">
+    <div class="heading">
+        <h2>Trending Products</h2>
+        <span>HANDPICKED FOR YOU</span>
+    </div>
+
+    <div class="filters">
+        <button class="filter active" onclick="filterCategory('All',this)">All</button>
+        <button class="filter" onclick="filterCategory('Electronics',this)">Electronics</button>
+        <button class="filter" onclick="filterCategory('Fashion',this)">Fashion</button>
+        <button class="filter" onclick="filterCategory('Accessories',this)">Accessories</button>
+        <button class="filter" onclick="filterCategory('Lifestyle',this)">Lifestyle</button>
+        <button class="filter" onclick="filterCategory('Home',this)">Home</button>
+    </div>
+
+    <div class="products" id="product-list"></div>
+</section>
+
+<section class="section" id="features">
+    <div class="features">
+        <div class="feature"><span>🚚</span><div><h4>Fast Delivery</h4><p>Convenient delivery experience</p></div></div>
+        <div class="feature"><span>🔒</span><div><h4>Secure Shopping</h4><p>Your shopping data stays protected</p></div></div>
+        <div class="feature"><span>💬</span><div><h4>Customer Support</h4><p>We're here to help</p></div></div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-content">
+        <div><h2>NEXORA.</h2><p>Your world of shopping, simplified.</p></div>
+        <div><h3>Quick Links</h3><p>Home<br>Products<br>Categories<br>Contact</p></div>
+        <div><h3>Customer Care</h3><p>Help Center<br>Shopping Guide<br>Returns Policy</p></div>
+    </div>
+    <div class="copyright">© 2026 NEXORA. All Rights Reserved.</div>
+</footer>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<aside class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+        <h2>🛒 Your Shopping Bag</h2>
+        <button class="close" onclick="closeCart()">×</button>
+    </div>
+
+    <div class="cart-items" id="cart-items"></div>
+
+    <div class="cart-footer">
+        <div class="total-row"><span>Subtotal</span><strong id="subtotal">₹0</strong></div>
+        <div class="total-row"><span>Delivery</span><strong id="delivery">₹0</strong></div>
+        <div class="total-row grand"><span>Total</span><span id="total">₹0</span></div>
+        <button class="checkout" onclick="checkout()">Proceed to Checkout →</button>
+    </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const products = [
+{id:1,name:"Wireless Headphones",price:2499,old:3999,emoji:"🎧",category:"Electronics",rating:"4.8"},
+{id:2,name:"Smart Watch Pro",price:3299,old:4999,emoji:"⌚",category:"Electronics",rating:"4.7"},
+{id:3,name:"Classic Sneakers",price:1999,old:2999,emoji:"👟",category:"Fashion",rating:"4.6"},
+{id:4,name:"Premium Backpack",price:1299,old:1999,emoji:"🎒",category:"Lifestyle",rating:"4.5"},
+{id:5,name:"Digital Camera",price:8999,old:11999,emoji:"📷",category:"Electronics",rating:"4.9"},
+{id:6,name:"Stylish Sunglasses",price:899,old:1499,emoji:"🕶️",category:"Accessories",rating:"4.4"},
+{id:7,name:"Running T-Shirt",price:699,old:999,emoji:"👕",category:"Fashion",rating:"4.5"},
+{id:8,name:"Bluetooth Speaker",price:1799,old:2499,emoji:"🔊",category:"Electronics",rating:"4.8"},
+{id:9,name:"Travel Bottle",price:499,old:799,emoji:"🧴",category:"Lifestyle",rating:"4.3"},
+{id:10,name:"Table Lamp",price:1199,old:1799,emoji:"💡",category:"Home",rating:"4.6"},
+{id:11,name:"Leather Wallet",price:799,old:1299,emoji:"👛",category:"Accessories",rating:"4.5"},
+{id:12,name:"Coffee Maker",price:2799,old:3999,emoji:"☕",category:"Home",rating:"4.7"}
+];
+
+let cart = JSON.parse(localStorage.getItem("nexoraCart")) || [];
+let wishlist = [];
+let currentCategory = "All";
+
+const money = n => "₹" + n.toLocaleString("en-IN");
+
+function renderProducts(){
+    const search = document.getElementById("search").value.toLowerCase();
+    const filtered = products.filter(p =>
+        (currentCategory === "All" || p.category === currentCategory) &&
+        p.name.toLowerCase().includes(search)
+    );
+
+    document.getElementById("product-list").innerHTML = filtered.length
+    ? filtered.map(p => `
+        <div class="product">
+            <span class="discount">${Math.round((1-p.price/p.old)*100)}% OFF</span>
+            <button class="wishlist" onclick="toggleWish(${p.id})">${wishlist.includes(p.id)?"❤️":"♡"}</button>
+            <div class="product-image">${p.emoji}</div>
+            <small>${p.category}</small>
+            <h3>${p.name}</h3>
+            <div class="rating">★ ${p.rating} <span style="color:#aaa">| Top rated</span></div>
+            <div class="price">${money(p.price)} <span class="old-price">${money(p.old)}</span></div>
+            <button class="add" onclick="addToCart(${p.id})">+ Add to Cart</button>
+        </div>
+    `).join("")
+    : `<div class="no-results">No products found. Try another search.</div>`;
+}
+
+function filterCategory(category,button){
+    currentCategory=category;
+    document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+    if(button) button.classList.add("active");
+    else {
+        document.querySelectorAll(".filter").forEach(b=>{
+            if(b.textContent.trim()===category)b.classList.add("active");
+        });
+    }
+    renderProducts();
+}
+
+function toggleWish(id){
+    wishlist = wishlist.includes(id)
+    ? wishlist.filter(x=>x!==id)
+    : [...wishlist,id];
+    renderProducts();
+    showToast(wishlist.includes(id)?"Added to wishlist ❤️":"Removed from wishlist");
+}
+
+function addToCart(id){
+    const item=cart.find(p=>p.id===id);
+    if(item)item.quantity++;
+    else cart.push({...products.find(p=>p.id===id),quantity:1});
+    updateCart();
+    showToast("Product added to your bag!");
+}
+
+function changeQty(id,amount){
+    const item=cart.find(p=>p.id===id);
+    if(!item)return;
+    item.quantity+=amount;
+    if(item.quantity<=0)removeItem(id);
+    else updateCart();
+}
+
+function removeItem(id){
+    cart=cart.filter(p=>p.id!==id);
+    updateCart();
+    showToast("Product removed");
+}
+
+function updateCart(){
+    localStorage.setItem("nexoraCart",JSON.stringify(cart));
+
+    const count=cart.reduce((sum,p)=>sum+p.quantity,0);
+    const subtotal=cart.reduce((sum,p)=>sum+p.price*p.quantity,0);
+    const delivery=subtotal>0?50:0;
+
+    document.getElementById("count").textContent=count;
+    document.getElementById("subtotal").textContent=money(subtotal);
+    document.getElementById("delivery").textContent=money(delivery);
+    document.getElementById("total").textContent=money(subtotal+delivery);
+
+    document.getElementById("cart-items").innerHTML=cart.length
+    ? cart.map(p=>`
+        <div class="cart-item">
+            <div class="cart-emoji">${p.emoji}</div>
+            <div class="cart-details">
+                <h4>${p.name}</h4>
+                <strong>${money(p.price*p.quantity)}</strong>
+                <div class="quantity">
+                    <button onclick="changeQty(${p.id},-1)">−</button>
+                    <span>${p.quantity}</span>
+                    <button onclick="changeQty(${p.id},1)">+</button>
+                    <button class="remove" onclick="removeItem(${p.id})">Remove</button>
+                </div>
+            </div>
+        </div>
+    `).join("")
+    : `<div class="empty"><div style="font-size:55px">🛍️</div><h3>Your bag is empty</h3><p>Discover something you love!</p></div>`;
+}
+
+function openCart(){
+    document.getElementById("cart-panel").classList.add("open");
+    document.getElementById("overlay").classList.add("show");
+}
+
+function closeCart(){
+    document.getElementById("cart-panel").classList.remove("open");
+    document.getElementById("overlay").classList.remove("show");
+}
+
+function showToast(message){
+    const toast=document.getElementById("toast");
+    toast.textContent=message;
+    toast.classList.add("show");
+    clearTimeout(window.toastTimer);
+    window.toastTimer=setTimeout(()=>toast.classList.remove("show"),2200);
+}
+
+function checkout(){
+    if(cart.length===0){
+        showToast("Your shopping bag is empty!");
+        return;
+    }
+    alert("Thank you for shopping with NEXORA! 🎉\n\nThis is a demo checkout. No payment has been processed.");
+}
+
+document.getElementById("search").addEventListener("input",renderProducts);
+
+renderProducts();
+updateCart();
+</script>
+
+</body>
+</html>
